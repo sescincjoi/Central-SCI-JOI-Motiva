@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ronda de Extintores</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; }
+  h1 { margin-bottom: 10px; }
+  label, select, input, button { font-size: 16px; margin: 5px 0; }
+  #lista-extintores { margin-top: 15px; display: flex; flex-wrap: wrap; }
+  .extintor { 
+    width: 100px; margin: 5px; padding: 10px; border: 2px solid #333; 
+    border-radius: 8px; cursor: pointer; text-align: center; position: relative;
+  }
+  .feito { background-color: #4CAF50; color: white; border-color: #3a8a3a; }
+  .info { font-size: 12px; margin-top: 4px; color: #555; }
+  #resetBtn { margin-top: 15px; padding: 10px 16px; background: #d9534f; color: #fff; border:none; border-radius:6px; cursor:pointer; }
+  #resetBtn:hover { background: #c9302c; }
+</style>
+</head>
+<body>
+
+<h1>Ronda de Extintores</h1>
+
+<label>Seu nome:</label>
+<input id="userName" placeholder="Ex: João" />
+
+<div>
+  <label>Edificação:</label>
+  <select id="edificacao"></select>
+</div>
+
+<button id="resetBtn">🔄 Resetar TODOS os extintores</button>
+
+<div id="lista-extintores"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { getDatabase, ref, onValue, update, set, get, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+
+// 🔹 Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyC7lypBBMv9RJ7ta3uaXTiU4txg8x91TWI",
+  authDomain: "ronda-extintores.firebaseapp.com",
+  projectId: "ronda-extintores",
+  storageBucket: "ronda-extintores.firebasestorage.app",
+  messagingSenderId: "712050420595",
+  appId: "1:712050420595:web:96ce82f25307c7aba4f306",
+  measurementId: "G-S8SERMVVCR"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+signInAnonymously(auth);
+
+const edificacaoSelect = document.getElementById('edificacao');
+const listaDiv = document.getElementById('lista-extintores');
+const userNameInput = document.getElementById('userName');
+const resetBtn = document.getElementById('resetBtn');
+
+let currentListener = null;
+
+// Carregar edificações do Firebase
+function carregarEdificacoes() {
+  const edRef = ref(db, 'edificacoes');
+  onValue(edRef, snap => {
+    const data = snap.val() || {};
+    edificacaoSelect.innerHTML = '';
+    for (const key in data) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = data[key].name || key;
+      edificacaoSelect.appendChild(opt);
+    }
+    if (edificacaoSelect.options.length > 0) {
+      edificacaoSelect.value = edificacaoSelect.options[0].value;
+      mostrarExtintores(edificacaoSelect.value);
+    }
+  });
+}
+
+// Mostrar extintores da edificação selecionada
+function mostrarExtintores(edKey) {
+  if (currentListener) currentListener();
+  const extRef = ref(db, `extintores/${edKey}`);
+  const off = onValue(extRef, snap => {
+    const data = snap.val() || {};
+    listaDiv.innerHTML = `<h3>${edificacaoSelect.selectedOptions[0].textContent}</h3>`;
+    Object.keys(data).sort((a,b)=>Number(a)-Number(b)).forEach(id => {
+      const node = data[id];
+      const div = document.createElement('div');
+      div.className = 'extintor' + (node.vistoriado ? ' feito' : '');
+      div.textContent = `#${id}`;
+      
+      const info = document.createElement('div');
+      info.className = 'info';
+      if (node.vistoriado && node.vistoriadoPor) {
+        const dt = node.vistoriadoEm ? new Date(node.vistoriadoEm).toLocaleString() : '';
+        info.textContent = `Vistoriado por ${node.vistoriadoPor} ${dt}`;
+      }
+      div.appendChild(info);
+
+      div.onclick = async () => {
+        const nome = userNameInput.value.trim();
+        if (!nome) {
+          alert("❌ Por favor, preencha seu nome antes de vistoriar um extintor!");
+          return;
+        }
+        await update(ref(db, `extintores/${edKey}/${id}`), {
+          vistoriado: !node.vistoriado,
+          vistoriadoPor: nome,
+          vistoriadoEm: serverTimestamp()
+        });
+      };
+      listaDiv.appendChild(div);
+    });
+  });
+  currentListener = () => off();
+}
+
+edificacaoSelect.addEventListener('change', () => {
+  mostrarExtintores(edificacaoSelect.value);
+});
+
+// 🔹 Reset geral funcionando corretamente
+resetBtn.onclick = async () => {
+  if (!confirm("⚠️ Tem certeza que deseja resetar TODOS os extintores?")) return;
+
+  const edSnap = await get(ref(db, "extintores"));
+  const data = edSnap.val() || {};
+
+  const updates = {};
+  for (const edKey in data) {
+    for (const extKey in data[edKey]) {
+      updates[`extintores/${edKey}/${extKey}`] = {
+        vistoriado:false,
+        vistoriadoPor:"",
+        vistoriadoEm:null
+      };
+    }
+  }
+
+  await update(ref(db), updates);
+  alert("✅ Todos os extintores foram resetados!");
+};
+
+// 🔹 Função seed inicial
+window.seedExtintores = async () => {
+  const edificacoes = [
+    { key:"DESEMBARQUE", name:"DESEMBARQUE", numeros:[1,2,3,4,5,6,7,8,9,10] },
+    { key:"TPS_TERREO", name:"TPS TÉRREO", numeros:[11,12,13,14,15,16,17,18] },
+    { key:"TPS_SUPERIOR", name:"TPS SUPERIOR", numeros:[19,20,21,22,23] },
+    { key:"ADM_RADIO", name:"ADM/RÁDIO", numeros:[24,25,26,27] },
+    { key:"CASA_DE_BOMBAS", name:"CASA DE BOMBAS", numeros:[28,29,30] },
+    { key:"CAMPO_DE_ANTENAS", name:"CAMPO DE ANTENAS", numeros:[31,32,33] },
+    { key:"EMBARQUE", name:"EMBARQUE", numeros:[34,35,36,37,38] },
+    { key:"ELOS", name:"ELOS", numeros:[39,40,41] },
+    { key:"APOC_PATIO_AVIACAO_GERAL", name:"APOC/PÁTIO AVIAÇÃO GERAL", numeros:[42,43,44,45] },
+    { key:"PORTAO_1", name:"PORTÃO 1", numeros:[46,47] },
+    { key:"KF", name:"KF", numeros:[48,49,50] },
+    { key:"PAA", name:"PAA", numeros:[51,52,53,54] },
+    { key:"MANUTENCAO", name:"MANUTENÇÃO", numeros:[55,56,57] },
+    { key:"SCI", name:"SCI", numeros:[58,59,60] }
+  ];
+
+  for(const ed of edificacoes){
+    if(!ed.name || ed.name.trim()===""){ console.error(`❌ Nome inválido para ${ed.key}`); continue; }
+    await update(ref(db, `edificacoes/${ed.key}`), { name: ed.name });
+    const extObj = {};
+    ed.numeros.forEach(num => { extObj[num] = { vistoriado:false, vistoriadoPor:"", vistoriadoEm:null }; });
+    await set(ref(db, `extintores/${ed.key}`), extObj);
+  }
+  alert("✅ Base inicial criada!");
+  carregarEdificacoes();
+};
+
+window.onload = carregarEdificacoes;
+</script>
+</body>
+</html>
