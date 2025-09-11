@@ -29,6 +29,11 @@
 
   <br>
   <button onclick="resetarTodos()">🔄 Resetar TODOS os extintores</button>
+  <div id="confirmReset" style="display:none; margin-top:10px;">
+    <span>Tem certeza que deseja resetar TODOS os extintores?</span>
+    <button onclick="confirmReset(true)">✅ Sim</button>
+    <button onclick="confirmReset(false)">❌ Não</button>
+  </div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -121,21 +126,31 @@
     }
 
     // 🔹 Reset geral
-    function resetarTodos() {
-      if (confirm("Tem certeza que deseja resetar TODOS os extintores?")) {
-        db.ref("extintores").once("value").then(snapshot => {
-          const updates = {};
-          snapshot.forEach(ed => {
-            ed.forEach(ext => {
-              updates[`extintores/${ed.key}/${ext.key}`] = { vistoriado: false, por: "" };
-            });
-          });
-          db.ref().update(updates)
-            .then(() => mostrarMensagem("🔄 Todos os extintores foram resetados!", "sucesso"))
-            .catch(err => mostrarMensagem("❌ Erro ao resetar: " + err.message, "erro"));
-        });
-      }
-    }
+    // Mostra confirmação personalizada
+function resetarTodos() {
+  document.getElementById("confirmReset").style.display = "block";
+}
+
+// Ação do usuário
+function confirmReset(decisao) {
+  const container = document.getElementById("confirmReset");
+  container.style.display = "none";
+
+  if (!decisao) return; // Cancelou
+
+  db.ref("extintores").once("value").then(snapshot => {
+    const updates = {};
+    snapshot.forEach(ed => {
+      ed.forEach(ext => {
+        updates[`extintores/${ed.key}/${ext.key}`] = { vistoriado: false, por: "" };
+      });
+    });
+    db.ref().update(updates)
+      .then(() => mostrarMensagem("🔄 Todos os extintores foram resetados!", "sucesso"))
+      .catch(err => mostrarMensagem("❌ Erro ao resetar: " + err.message, "erro"));
+  });
+}
+
 
     // 🔹 Função seed organizada
     function seedExtintores() {
@@ -191,3 +206,4 @@
   </script>
 </body>
 </html>
+
