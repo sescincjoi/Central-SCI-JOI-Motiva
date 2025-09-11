@@ -33,7 +33,18 @@
       padding: 5% 10%;
       border-radius: 1em 1em 0 0;
     }
-    button { margin: 5px; padding: 10px; border-radius: 6px; cursor: pointer; border: none; }
+    button#reset {
+      position: absolute;
+      margin: 0;
+      padding: 4%;
+      width: 80%;
+      left: 10%;
+      bottom: 10vh;
+      font-size: 2.5em;
+      background: rgb(0 0 0 / 80%);
+      color: #fff;
+      border-radius: 1em;
+    }
     .vistoriado { background: #28a745; color: #fff; }
     .nao-vistoriado { background: #f0f0f0; color: #000; }
     #mensagem { margin:10px; padding:8px; display:none; border-radius:4px; font-weight:bold; }
@@ -57,7 +68,7 @@
   <div id="mensagem"></div>
 
   <br>
-  <button onclick="resetarTodos()">🔄 Resetar TODOS os extintores</button>
+  <button id="reset" onclick="resetarTodos()">🔄 Resetar TODOS os extintores</button>
   <div id="confirmReset" style="display:none; margin-top:10px;">
     <span>Tem certeza que deseja resetar TODOS os extintores?</span>
     <button onclick="confirmReset(true)">✅ Sim</button>
@@ -235,5 +246,6 @@ function confirmReset(decisao) {
   </script>
 </body>
 </html>
+
 
 
