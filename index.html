@@ -4,9 +4,14 @@
   <meta charset="UTF-8">
   <title>Controle de Inspeção</title>
   <style>
+    
+  :root {
+    --vh: 100%;
+  }
+    
     body {
       width: 100vw;
-      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
       font-family: Arial, sans-serif;
       margin: 0;
       background: url(https://images.pexels.com/photos/5965211/pexels-photo-5965211.jpeg?_gl=1*1nkppr7*_ga*MTAyODczODAzNC4xNzU1MTE4Mzc1*_ga_8JE65Q40S6*czE3NTc2MDQ3MDEkbzYkZzEkdDE3NTc2MDUwNTEkajgkbDAkaDA.);
@@ -198,6 +203,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
+    // Altura visivel na tela
+function setVH() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+  }
+
+  setVH();
+  window.addEventListener('resize', setVH);
+    
     // 🔹 SUA CONFIG FIREBASE AQUI
     const firebaseConfig = {
       apiKey: "AIzaSyC7lypBBMv9RJ7ta3uaXTiU4txg8x91TWI",
@@ -367,6 +380,7 @@ function confirmReset(decisao) {
   </script>
 </body>
 </html>
+
 
 
 
