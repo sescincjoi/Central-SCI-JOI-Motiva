@@ -137,8 +137,39 @@
       }
     }
 
+    // 🔹 Função seed organizada
+    function seedExtintores() {
+      const edificacoes = {
+        "DESEMBARQUE": [1,2,3,4,5],
+        "TPS TÉRREO": [6,7,8],
+        "TPS SUPERIOR": [9,10,11],
+        "ADM/RÁDIO": [12,13],
+        "CASA DE BOMBAS": [14,15],
+        "CAMPO DE ANTENAS": [16],
+        "EMBARQUE": [17,18,19],
+        "ELOS": [20,21],
+        "APOC/PÁTIO AVIAÇÃO GERAL": [22,23,24],
+        "PORTÃO 1": [25,26],
+        "KF": [27],
+        "PAA": [28,29],
+        "MANUTENÇÃO": [30,31],
+        "SCI": [32]
+      };
+
+      const updates = {};
+      Object.keys(edificacoes).forEach(ed => {
+        edificacoes[ed].forEach(num => {
+          updates[`extintores/${ed}/${num}`] = { vistoriado: false, por: "" };
+        });
+      });
+
+      db.ref().update(updates)
+        .then(() => mostrarMensagem("✅ Extintores carregados com sucesso!", "sucesso"))
+        .catch(err => mostrarMensagem("❌ Erro ao carregar extintores: " + err.message, "erro"));
+    }
+
     // 🔹 Popular select com edificações
-    const edificacoes = [
+    const edificacoesArray = [
       "DESEMBARQUE", "TPS TÉRREO", "TPS SUPERIOR",
       "ADM/RÁDIO", "CASA DE BOMBAS", "CAMPO DE ANTENAS",
       "EMBARQUE", "ELOS", "APOC/PÁTIO AVIAÇÃO GERAL",
@@ -146,7 +177,7 @@
     ];
 
     const select = document.getElementById("edificacao");
-    edificacoes.forEach(ed => {
+    edificacoesArray.forEach(ed => {
       const opt = document.createElement("option");
       opt.value = ed;
       opt.text = ed;
@@ -156,7 +187,7 @@
     select.addEventListener("change", e => renderizarExtintores(e.target.value));
 
     // 🔹 Renderizar a primeira edificação por padrão
-    renderizarExtintores(edificacoes[0]);
+    renderizarExtintores(edificacoesArray[0]);
   </script>
 </body>
 </html>
