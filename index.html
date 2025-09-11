@@ -33,6 +33,33 @@
       padding: 5% 10%;
       border-radius: 1em 1em 0 0;
     }
+    .usuario {
+      display: flex;
+      padding: 3% 8.5%;
+      flex-direction: row;
+      align-items: center;
+    }
+    .usuario label {
+      width: 36%;
+      font-size: 2.4em;
+      color: #fff;
+      padding: 0 2%;
+      white-space: nowrap;
+    }
+    input#nomeUsuario {
+      width: 58%;
+      font-size: 2.5em;
+      padding: 3% 0 3% 6%;
+      color: #ffffff78;
+      background: rgb(0 0 0 / 80%);
+      border: none;
+      border-radius: 0.5em;
+    }
+    input#nomeUsuario:focus {
+      border: none;
+      box-shadow: 0 0 5px rgb(255 255 255 / 20%);
+    }
+    
     button#reset {
       position: absolute;
       margin: 0;
@@ -53,10 +80,10 @@
 <body>
  <div class="corpo-container">
   <h1 class="titulo-principal">Controle de Inspeção dos Extintores</h1>
-
-  <label for="nomeUsuario">👨‍🚒 Seu Nome:</label>
+ <div class="usuario">
+  <label for="nomeUsuario">Seu nome:</label>
   <input type="text" id="nomeUsuario" placeholder="Digite seu nome">
-
+ </div>
   <br><br>
 
   <label for="edificacao">🏢 Escolha a edificação:</label>
@@ -246,6 +273,7 @@ function confirmReset(decisao) {
   </script>
 </body>
 </html>
+
 
 
 
