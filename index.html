@@ -5,82 +5,37 @@
   <title>Ronda de Extintores</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    select, input, button { margin: 5px; padding: 5px; }
-    .extintor { display: inline-block; margin: 5px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
-    .vistoriado { background-color: #4CAF50; color: white; }
-    #mensagem {
-      margin:10px 0;
-      padding:8px;
-      display:none;
-      border-radius:4px;
-      font-weight:bold;
-    }
-    /* Caixa de confirmação customizada */
-    #confirmBox {
-      display:none;
-      position:fixed;
-      top:0; left:0; right:0; bottom:0;
-      background:rgba(0,0,0,0.5);
-      justify-content:center;
-      align-items:center;
-      z-index:1000;
-    }
-    #confirmBox .conteudo {
-      background:#fff;
-      padding:20px;
-      border-radius:8px;
-      text-align:center;
-      max-width:300px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.3);
-    }
-    #confirmBox button {
-      margin:10px;
-      padding:8px 15px;
-      border:none;
-      border-radius:4px;
-      cursor:pointer;
-      font-weight:bold;
-    }
-    #confirmSim { background:#dc3545; color:#fff; }
-    #confirmNao { background:#6c757d; color:#fff; }
+    h1 { color: #333; }
+    button { margin: 5px; padding: 10px; border-radius: 6px; cursor: pointer; border: none; }
+    .vistoriado { background: #28a745; color: #fff; }
+    .nao-vistoriado { background: #f0f0f0; color: #000; }
+    #mensagem { margin:10px; padding:8px; display:none; border-radius:4px; font-weight:bold; }
   </style>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
 </head>
 <body>
   <h1>Ronda de Extintores</h1>
 
-  <!-- Campo de mensagens -->
-  <div id="mensagem"></div>
+  <label for="nomeUsuario">👨‍🚒 Seu Nome:</label>
+  <input type="text" id="nomeUsuario" placeholder="Digite seu nome">
 
-  <label for="nome">Seu nome:</label>
-  <input type="text" id="nome" placeholder="Digite seu nome">
+  <br><br>
 
-  <br>
-
-  <label for="edificacao">Escolha a edificação:</label>
+  <label for="edificacao">🏢 Escolha a edificação:</label>
   <select id="edificacao"></select>
 
-  <button id="resetGeral">Resetar TODOS os extintores</button>
+  <div id="extintores" style="margin-top:20px;"></div>
 
-  <div id="extintores"></div>
+  <div id="mensagem"></div>
 
-  <!-- Caixa de confirmação customizada -->
-  <div id="confirmBox">
-    <div class="conteudo">
-      <p id="confirmMensagem">Tem certeza?</p>
-      <button id="confirmSim">Sim</button>
-      <button id="confirmNao">Cancelar</button>
-    </div>
-  </div>
+  <br>
+  <button onclick="resetarTodos()">🔄 Resetar TODOS os extintores</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getDatabase, ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-    // Configuração do Firebase
+  <script>
+    // 🔹 SUA CONFIG FIREBASE AQUI
     const firebaseConfig = {
       apiKey: "AIzaSyC7lypBBMv9RJ7ta3uaXTiU4txg8x91TWI",
       authDomain: "ronda-extintores.firebaseapp.com",
@@ -88,16 +43,14 @@
       storageBucket: "ronda-extintores.firebasestorage.app",
       messagingSenderId: "712050420595",
       appId: "1:712050420595:web:96ce82f25307c7aba4f306",
-      measurementId: "G-S8SERMVVCR"
+      measurementId: "G-S8SERMVVCR",
+      databaseURL: "https://ronda-extintores-default-rtdb.firebaseio.com/"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const auth = getAuth();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    signInAnonymously(auth).catch(error => console.error(error));
-
-    // Função para exibir mensagens personalizadas
+    // 🔹 Sistema de mensagens
     function mostrarMensagem(texto, tipo="info") {
       const msg = document.getElementById("mensagem");
       msg.innerText = texto;
@@ -120,118 +73,90 @@
       setTimeout(() => { msg.style.display = "none"; }, 5000);
     }
 
-    // Função para confirmação customizada
-    function confirmarAcao(mensagem, callbackSim) {
-      const box = document.getElementById("confirmBox");
-      document.getElementById("confirmMensagem").innerText = mensagem;
-      box.style.display = "flex";
+    // 🔹 Marcar extintor com nome obrigatório
+    function toggleExtintor(edificacao, numero) {
+      const nomeUsuario = document.getElementById("nomeUsuario").value.trim();
 
-      document.getElementById("confirmSim").onclick = () => {
-        box.style.display = "none";
-        callbackSim();
-      };
-      document.getElementById("confirmNao").onclick = () => {
-        box.style.display = "none";
-      };
+      if (!nomeUsuario) {
+        mostrarMensagem("⚠️ Digite seu nome antes de marcar a vistoria!", "erro");
+        return;
+      }
+
+      const ref = db.ref(`extintores/${edificacao}/${numero}`);
+      ref.once("value").then(snapshot => {
+        const atual = snapshot.val() || {};
+        const novoStatus = !atual.vistoriado;
+        ref.update({
+          vistoriado: novoStatus,
+          por: novoStatus ? nomeUsuario : ""
+        });
+      });
     }
 
-    // Popula o select de edificações
-    const edificacoes = [
-      "DESEMBARQUE",
-      "TPS TÉRREO",
-      "TPS SUPERIOR",
-      "ADM/RÁDIO",
-      "CASA DE BOMBAS",
-      "CAMPO DE ANTENAS",
-      "EMBARQUE",
-      "ELOS",
-      "APOC/PÁTIO AVIAÇÃO GERAL",
-      "PORTÃO 1",
-      "KF",
-      "PAA",
-      "MANUTENÇÃO",
-      "SCI"
-    ];
-    const select = document.getElementById("edificacao");
-    edificacoes.forEach(ed => {
-      const opt = document.createElement("option");
-      opt.value = ed;
-      opt.innerText = ed;
-      select.appendChild(opt);
-    });
-
-    // Exibe os extintores da edificação
-    function carregarExtintores(edificacao) {
+    // 🔹 Renderizar extintores (mostra quem marcou)
+    function renderizarExtintores(edificacao) {
       const container = document.getElementById("extintores");
       container.innerHTML = "";
 
-      const extRef = ref(db, "extintores/" + edificacao);
-      onValue(extRef, snapshot => {
+      const ref = db.ref(`extintores/${edificacao}`);
+      ref.on("value", snapshot => {
+        const dados = snapshot.val();
         container.innerHTML = "";
-        snapshot.forEach(child => {
-          const numero = child.key;
-          const dados = child.val();
-          const btn = document.createElement("div");
-          btn.className = "extintor" + (dados.vistoriado ? " vistoriado" : "");
-          btn.innerText = numero;
 
-          btn.onclick = () => {
-            const nome = document.getElementById("nome").value.trim();
-            if (!nome) {
-              mostrarMensagem("⚠️ Digite seu nome antes de marcar extintores.", "erro");
-              return;
-            }
+        if (!dados) {
+          container.innerHTML = "<p>Nenhum extintor cadastrado.</p>";
+          return;
+        }
 
-            const novoEstado = !dados.vistoriado;
-            update(ref(db, "extintores/" + edificacao + "/" + numero), {
-              vistoriado: novoEstado,
-              vistoriadoPor: novoEstado ? nome : "",
-              vistoriadoEm: novoEstado ? new Date().toISOString() : null
-            });
-          };
-
+        Object.keys(dados).forEach(numero => {
+          const ext = dados[numero];
+          const btn = document.createElement("button");
+          btn.id = `ext-${edificacao}-${numero}`;
+          btn.innerText = ext.vistoriado ? `${numero} ✅ (${ext.por})` : numero;
+          btn.className = ext.vistoriado ? "vistoriado" : "nao-vistoriado";
+          btn.onclick = () => toggleExtintor(edificacao, numero);
           container.appendChild(btn);
         });
       });
     }
 
-    select.onchange = () => carregarExtintores(select.value);
-
-    // Reset geral com confirmação customizada
-    document.getElementById("resetGeral").onclick = () => {
-      confirmarAcao("Tem certeza que deseja resetar TODOS os extintores?", () => {
-        edificacoes.forEach(ed => {
-          const extRef = ref(db, "extintores/" + ed);
-          get(extRef).then(snapshot => {
-            snapshot.forEach(child => {
-              update(ref(db, "extintores/" + ed + "/" + child.key), {
-                vistoriado: false,
-                vistoriadoPor: "",
-                vistoriadoEm: null
-              });
+    // 🔹 Reset geral
+    function resetarTodos() {
+      if (confirm("Tem certeza que deseja resetar TODOS os extintores?")) {
+        db.ref("extintores").once("value").then(snapshot => {
+          const updates = {};
+          snapshot.forEach(ed => {
+            ed.forEach(ext => {
+              updates[`extintores/${ed.key}/${ext.key}`] = { vistoriado: false, por: "" };
             });
           });
+          db.ref().update(updates)
+            .then(() => mostrarMensagem("🔄 Todos os extintores foram resetados!", "sucesso"))
+            .catch(err => mostrarMensagem("❌ Erro ao resetar: " + err.message, "erro"));
         });
-        mostrarMensagem("🔄 Todos os extintores foram resetados!", "info");
-      });
-    };
+      }
+    }
 
-    // Função para criar extintores iniciais (rodar 1x no console)
-    window.seedExtintores = function() {
-      edificacoes.forEach(ed => {
-        for (let i = 1; i <= 5; i++) { // exemplo: 5 extintores
-          set(ref(db, "extintores/" + ed + "/" + i), {
-            vistoriado: false,
-            vistoriadoPor: "",
-            vistoriadoEm: null
-          });
-        }
-      });
-      mostrarMensagem("✅ Base inicial criada!", "sucesso");
-    };
+    // 🔹 Popular select com edificações
+    const edificacoes = [
+      "DESEMBARQUE", "TPS TÉRREO", "TPS SUPERIOR",
+      "ADM/RÁDIO", "CASA DE BOMBAS", "CAMPO DE ANTENAS",
+      "EMBARQUE", "ELOS", "APOC/PÁTIO AVIAÇÃO GERAL",
+      "PORTÃO 1", "KF", "PAA", "MANUTENÇÃO", "SCI"
+    ];
 
-    // Carrega a primeira edificação ao abrir
-    carregarExtintores(select.value);
+    const select = document.getElementById("edificacao");
+    edificacoes.forEach(ed => {
+      const opt = document.createElement("option");
+      opt.value = ed;
+      opt.text = ed;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener("change", e => renderizarExtintores(e.target.value));
+
+    // 🔹 Renderizar a primeira edificação por padrão
+    renderizarExtintores(edificacoes[0]);
   </script>
 </body>
 </html>
