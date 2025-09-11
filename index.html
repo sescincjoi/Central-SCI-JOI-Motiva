@@ -276,20 +276,22 @@ function confirmReset(decisao) {
     // 🔹 Função seed organizada
     function seedExtintores() {
       const edificacoes = {
-        "DESEMBARQUE": [1,2,3,4,5],
-        "TPS TÉRREO": [6,7,8],
-        "TPS SUPERIOR": [9,10,11],
-        "ADM/RÁDIO": [12,13],
-        "CASA DE BOMBAS": [14,15],
-        "CAMPO DE ANTENAS": [16],
-        "EMBARQUE": [17,18,19],
-        "ELOS": [20,21],
-        "APOC/PÁTIO AVIAÇÃO GERAL": [22,23,24],
-        "PORTÃO 1": [25,26],
-        "KF": [27],
-        "PAA": [28,29],
-        "MANUTENÇÃO": [30,31],
-        "SCI": [32]
+        "DESEMBARQUE": [24,25,26,27],
+        "TPS TÉRREO": [18,19,20,21,22,23,32,33,85],
+        "TPS SUPERIOR": [28,29,30,31,34,35,36,37,97],
+        "ADM/RÁDIO": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,84],
+        "CASA DE BOMBAS": [15],
+        "CAMPO DE ANTENAS": [19,20,88,89],
+        "RAIO X": [38,39,40],
+        "EMBARQUE": [41,42,43,44,45],
+        "ELOS": [46,47,48,49,50,51,52],
+        "APOC/PÁTIO AVIAÇÃO GERAL": [53,54,55,56],
+        "PORTÃO 1": [57],
+        "KF": [58,59,60,61,62],
+        "PAA": [63,64,65,66],
+        "MANUTENÇÃO": [67,68,69,70,71],
+        "GSE GOL/AZUL/RP": [72,73,74,75],
+        "SCI": [76,77,78,79,80,81,82,86,87]
       };
 
       const updates = {};
@@ -308,8 +310,8 @@ function confirmReset(decisao) {
     const edificacoesArray = [
       "DESEMBARQUE", "TPS TÉRREO", "TPS SUPERIOR",
       "ADM/RÁDIO", "CASA DE BOMBAS", "CAMPO DE ANTENAS",
-      "EMBARQUE", "ELOS", "APOC/PÁTIO AVIAÇÃO GERAL",
-      "PORTÃO 1", "KF", "PAA", "MANUTENÇÃO", "SCI"
+      "RAIO X", "EMBARQUE", "ELOS", "APOC/PÁTIO AVIAÇÃO GERAL",
+      "PORTÃO 1", "KF", "PAA", "MANUTENÇÃO", "GSE GOL/AZUL/RP", "SCI"
     ];
 
     const select = document.getElementById("edificacao");
@@ -327,6 +329,7 @@ function confirmReset(decisao) {
   </script>
 </body>
 </html>
+
 
 
 
