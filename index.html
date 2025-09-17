@@ -695,6 +695,10 @@ function seedExtintores() {
   if (!nomeUsuario) {
     alert("⚠️ Digite seu nome antes de iniciar a inspeção.");
     return; // impede abrir o modal
+  //scroll no começo
+    const conteudo = document.getElementById("modal-content");
+  if (conteudo) conteudo.scrollTop = 0;
+    
   }
 
   numeroAtual = numero;
@@ -956,6 +960,7 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
 
 
