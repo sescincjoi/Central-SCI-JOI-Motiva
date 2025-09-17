@@ -698,8 +698,10 @@ function seedExtintores() {
   form.innerHTML = `
     <div class="pergunta 1">
       <label>1- Este extintor é um ${info.tipo} ${info.kg}Kg?</label>
-      <input type="radio" name="p1" value="Sim" onchange="mostrarTipoKg(this.value)" required> Sim
-      <input type="radio" name="p1" value="Não" onchange="mostrarTipoKg(this.value)" required> Não
+        <div>
+          <input type="radio" name="p1" value="Sim" onchange="mostrarTipoKg(this.value)" required> Sim
+          <input type="radio" name="p1" value="Não" onchange="mostrarTipoKg(this.value)" required> Não
+        </div>
     </div>
 
     <div class="pergunta 1-1" id="p1_1" style="display:none;">
@@ -737,8 +739,10 @@ function seedExtintores() {
 
     <div class="pergunta 4">
       <label>4- Resultado da inspeção:</label>
-      <input type="radio" name="p4" value="Conforme" onchange="mostrarNaoConforme(this.value)" required> Conforme
-      <input type="radio" name="p4" value="Não conforme" onchange="mostrarNaoConforme(this.value)" required> Não conforme
+        <div>
+          <input type="radio" name="p4" value="Conforme" onchange="mostrarNaoConforme(this.value)" required> Conforme
+          <input type="radio" name="p4" value="Não conforme" onchange="mostrarNaoConforme(this.value)" required> Não conforme
+        </div>
     </div>
 
     <div class="pergunta 4-1" id="p4_1" style="display:none;">
@@ -936,6 +940,7 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
 
 
