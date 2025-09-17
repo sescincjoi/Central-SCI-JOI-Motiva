@@ -242,8 +242,8 @@
       margin-bottom: 0.5em;
     }
     #p1_1, #p1_2, #p4_1 {
-      font-size: 1.2em;
-      padding: 0 1em;
+      font-size: 1.3em;
+      padding: 0 0.5em;
     }
     input[type="radio"] {
       width: 4em;
@@ -697,7 +697,7 @@ function seedExtintores() {
   const form = document.getElementById("formInspecao");
   form.innerHTML = `
     <div class="pergunta 1">
-      <label>1- Este extintor é um ${info.tipo} ${info.kg}Kg, confirma?</label>
+      <label>1- Este extintor é um ${info.tipo} ${info.kg}Kg?</label>
       <input type="radio" name="p1" value="Sim" onchange="mostrarTipoKg(this.value)" required> Sim
       <input type="radio" name="p1" value="Não" onchange="mostrarTipoKg(this.value)" required> Não
     </div>
@@ -936,6 +936,7 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
 
 
