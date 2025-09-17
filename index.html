@@ -839,9 +839,9 @@ function mostrarNaoConforme(valor) {
   }
 
   const dados = {
+    numero: numeroAtual,
     usuario: document.getElementById("nomeUsuario").value,
     edificacao: edificacaoAtual,
-    numero: numeroAtual,
     descricao: extintoresInfo[edificacaoAtual][numeroAtual].descricao,
     tipo: extintoresInfo[edificacaoAtual][numeroAtual].tipo,
     kg: extintoresInfo[edificacaoAtual][numeroAtual].kg,
@@ -952,6 +952,7 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
 
 
