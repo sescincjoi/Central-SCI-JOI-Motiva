@@ -17,7 +17,7 @@
       background-position: center;
       width: 100vw;
       height: calc(var(--vh, 1vh) * 100);
-      overflow: hidden;
+      overflow: clip;
     }
     .corpo-container {
       width: 100%;
@@ -186,11 +186,13 @@
       align-items: center;
     }
     #modalContent {
+      position: absolute;
+      bottom: 2%;
       background: #fff;
       padding: 3%;
       width: 80%;
-      height: 72%;
-      max-height: 72%;
+      height: 82%;
+      max-height: 82%;
       overflow-y: auto;
       border-radius: 1em;
     }
@@ -919,4 +921,5 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
