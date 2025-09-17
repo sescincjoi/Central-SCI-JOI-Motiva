@@ -227,7 +227,10 @@
     }
     .pergunta {
       font-size: 1.4em;
-      margin-bottom: 1em;
+      margin-bottom: 2em;
+      background: rgb(0 0 0 / 5%);
+      padding-bottom: 1em;
+      border-radius: 0 0 0.5em 0.5em;
     }
     .pergunta label {
       display: block;
@@ -235,35 +238,40 @@
       background: #00000014;
       font-size: 1em;
       margin-bottom: 0.6em;
-      border-radius: 0.5em;
+      border-radius: 0.5em 0.5em 0 0;
       border-top: 4px solid #00000017;
     }
-    #p1_1 {
-      margin-bottom: 0.5em;
-    }
-    #p1_1, #p1_2, #p4_1 {
-      font-size: 1.3em;
-      padding: 0 0.5em;
+    .pergunta div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -3em;
     }
     input[type="radio"] {
+      margin-left: 5em;
+      margin-right: 1em;
       width: 4em;
       height: 4em;
     }
     select {
+      width: 90%;
       font-size: 1.2em;
       padding: 0.2em 1em;
       border: 1px solid #00000033;
       border-radius: 0.3em;
       color: #000000cc;
       font-weight: 600;
+      margin-left: 0.8em;
     }
     input[type="month"] {
+      width: 80%;
       font-size: 1.2em;
       padding: 0.2em 1em;
       border: 1px solid #00000033;
       border-radius: 0.3em;
       color: #000000cc;
       font-weight: 600;
+      margin-left: 1em;
     }
     input[type="number"] {
       font-size: 1.3em;
@@ -272,6 +280,8 @@
       border-radius: 0.3em;
       color: #000000cc;
       font-weight: 600;
+      width: 75%;
+      margin-left: 0.8em;
     }
     textarea {
       font-size: 1.2em;
@@ -280,6 +290,8 @@
       border-radius: 0.3em;
       color: #000000cc;
       font-weight: 600;
+      width: 80%;
+      margin-left: 0.95em;
     }
     .modal-buttons {
       display: flex;
@@ -291,7 +303,7 @@
       margin-bottom: 1em;
     }
     .modal-buttons button {
-      font-size: 2.15em;
+      font-size: 2.4em;
       margin: 0em 1em;
       padding: 0.3em 1.3em;
       border: none;
@@ -940,6 +952,7 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
 
 
