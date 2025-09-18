@@ -327,6 +327,20 @@
       background: #f44336;
       color: white;
     }
+    button#Xfecharmodal {
+      position: absolute;
+      width: 9%;
+      height: 4.5%;
+      padding-bottom: 1%;
+      top: 2%;
+      right: 3%;
+      font-size: 5em;
+      line-height: 0;
+      font-family: monospace;
+      border-radius: 0.2em;
+      background: #8080800f;
+      border: 2px solid #00000014;
+    }
     button#reset {
       position: fixed;
       width: 96%;
@@ -423,7 +437,7 @@
         <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
         <button type="button" class="btn-enviar" onclick="enviarFormulario()">Enviar</button>
       </div>
-    </div>
+    </div> <button id="Xfecharmodal" onclick="fecharModal()">x</button>
   </div>
 
   <!-- Firebase -->
@@ -965,6 +979,7 @@ function mostrarNaoConforme(valor) {
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
 </body>
 </html>
+
 
 
 
