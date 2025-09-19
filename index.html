@@ -1033,27 +1033,35 @@ function mostrarNaoConforme(valor) {
 
   if (isIOS() && !isInStandaloneMode()) {
     const msg = document.createElement('div');
+    msg.className = 'msg-ios';
     msg.innerHTML = `
       📲 Para instalar este app:<br>
       1. Toque em <strong>Compartilhar</strong> (ícone ⬆️)<br>
       2. Escolha <strong>Adicionar à Tela de Início</strong>
     `;
-    msg.style.position = 'fixed';
-    msg.style.bottom = '20px';
-    msg.style.left = '20px';
-    msg.style.right = '20px';
-    msg.style.padding = '15px';
-    msg.style.background = '#0d6efd';
-    msg.style.color = '#fff';
-    msg.style.textAlign = 'center';
-    msg.style.borderRadius = '10px';
-    msg.style.zIndex = '1000';
     document.body.appendChild(msg);
   }
 </script>
+  <style>
+    .msg-ios {
+      position: fixed;
+      top: 45%;
+      left: 10%;
+      right: 10%;
+      padding: 4% 2%;
+      background: rgb(255 255 255 / 95%);
+      box-shadow: 0 1em 1.4em -1em rgb(255 255 255 / 50%);
+      color: rgb(44 44 44);
+      font-size: 2.4em;
+      text-align: center;
+      border-radius: 0.7em;
+      z-index: 1000;
+    }
+  </style>
 
 </body>
 </html>
+
 
 
 
