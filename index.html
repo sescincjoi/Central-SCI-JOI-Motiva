@@ -1000,30 +1000,57 @@ function mostrarNaoConforme(valor) {
     e.preventDefault();
     deferredPrompt = e;
 
-    // cria botão de instalar
+    // cria container
+    const box = document.createElement('div');
+    box.style.position = "fixed";
+    box.style.bottom = "20px";
+    box.style.right = "20px";
+    box.style.padding = "10px 20px";
+    box.style.background = "#0d6efd";
+    box.style.color = "#fff";
+    box.style.borderRadius = "10px";
+    box.style.zIndex = "1000";
+    box.style.display = "flex";
+    box.style.alignItems = "center";
+    box.style.gap = "10px";
+
+    // botão instalar
     const btn = document.createElement('button');
     btn.textContent = "📲 Instalar App";
-    btn.style.position = "fixed";
-    btn.style.bottom = "20px";
-    btn.style.right = "20px";
-    btn.style.padding = "10px 20px";
-    btn.style.background = "#0d6efd";
-    btn.style.color = "#fff";
+    btn.style.background = "#fff";
+    btn.style.color = "#0d6efd";
     btn.style.border = "none";
-    btn.style.borderRadius = "5px";
-    btn.style.zIndex = "1000";
-    document.body.appendChild(btn);
+    btn.style.padding = "6px 12px";
+    btn.style.borderRadius = "6px";
+    btn.style.cursor = "pointer";
 
+    // botão fechar
+    const closeBtn = document.createElement('span');
+    closeBtn.textContent = "✖";
+    closeBtn.style.cursor = "pointer";
+    closeBtn.style.fontWeight = "bold";
+
+    // montar
+    box.appendChild(btn);
+    box.appendChild(closeBtn);
+    document.body.appendChild(box);
+
+    // ação instalar
     btn.addEventListener('click', async () => {
-      btn.style.display = "none";
+      box.style.display = "none";
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       console.log(`Usuário escolheu: ${outcome}`);
       deferredPrompt = null;
     });
+
+    // ação fechar
+    closeBtn.addEventListener('click', () => {
+      box.style.display = "none";
+    });
   });
 
-  // iOS: detecta se está no Safari/WebKit e mostra instruções
+  // iOS: detecta Safari/WebKit e mostra instruções
   function isIOS() {
     return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
   }
@@ -1033,13 +1060,26 @@ function mostrarNaoConforme(valor) {
 
   if (isIOS() && !isInStandaloneMode()) {
     const msg = document.createElement('div');
-    msg.className = 'msg-ios';
     msg.innerHTML = `
-      📲 Para instalar este app:<br>
-      1. Toque em <strong>Compartilhar</strong> (ícone ⬆️)<br>
-      2. Escolha <strong>Adicionar à Tela de Início</strong>
-    `;
+      <div style="flex:1; text-align:left;">
+        📲 Para instalar este app:<br>
+        1. Toque em <strong>Compartilhar</strong> (ícone ⬆️)<br>
+        2. Escolha <strong>Adicionar à Tela de Início</strong>
+      </div> `;
+
+    // botão fechar
+    const closeBtn = document.createElement('span');
+    closeBtn.textContent = "✖";
+    closeBtn.style.cursor = "pointer";
+    closeBtn.style.marginLeft = "10px";
+    closeBtn.style.fontWeight = "bold";
+
+    msg.appendChild(closeBtn);
     document.body.appendChild(msg);
+
+    closeBtn.addEventListener('click', () => {
+      msg.style.display = "none";
+    });
   }
 </script>
   <style>
@@ -1061,6 +1101,7 @@ function mostrarNaoConforme(valor) {
 
 </body>
 </html>
+
 
 
 
