@@ -1070,6 +1070,7 @@ function mostrarNaoConforme(valor) {
 
   if (isIOS() && !isInStandaloneMode()) {
     const msg = document.createElement('div');
+    msg.className = 'msg-ios';
     msg.innerHTML = `
       <div style="flex:1; text-align:left;">
         📲 Para instalar este app:<br>
@@ -1111,6 +1112,7 @@ function mostrarNaoConforme(valor) {
 
 </body>
 </html>
+
 
 
 
