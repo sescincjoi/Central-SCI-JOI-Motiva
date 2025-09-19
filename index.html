@@ -2,6 +2,12 @@
 <html lang="pt-BR">
 <head>
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0d6efd">
+
+  <!-- iOS suporte -->
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta charset="UTF-8">
   <title>Controle de Inspeção</title>
   <style>
@@ -979,8 +985,76 @@ function mostrarNaoConforme(valor) {
     
   </script>
   <!-- <button onclick="seedExtintores()" style="position:fixed; bottom:10px; right:10px; opacity:0.3;">🔄 Seed Extintores</button> -->
+  <script>
+  // Registrar o service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then(() => console.log('✅ Service Worker registrado'))
+      .catch(err => console.log('❌ Erro no SW', err));
+  }
+
+  let deferredPrompt;
+
+  // Android: captura o evento de instalação
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // cria botão de instalar
+    const btn = document.createElement('button');
+    btn.textContent = "📲 Instalar App";
+    btn.style.position = "fixed";
+    btn.style.bottom = "20px";
+    btn.style.right = "20px";
+    btn.style.padding = "10px 20px";
+    btn.style.background = "#0d6efd";
+    btn.style.color = "#fff";
+    btn.style.border = "none";
+    btn.style.borderRadius = "5px";
+    btn.style.zIndex = "1000";
+    document.body.appendChild(btn);
+
+    btn.addEventListener('click', async () => {
+      btn.style.display = "none";
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`Usuário escolheu: ${outcome}`);
+      deferredPrompt = null;
+    });
+  });
+
+  // iOS: detecta se está no Safari/WebKit e mostra instruções
+  function isIOS() {
+    return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+  }
+  function isInStandaloneMode() {
+    return ('standalone' in window.navigator) && window.navigator.standalone;
+  }
+
+  if (isIOS() && !isInStandaloneMode()) {
+    const msg = document.createElement('div');
+    msg.innerHTML = `
+      📲 Para instalar este app:<br>
+      1. Toque em <strong>Compartilhar</strong> (ícone ⬆️)<br>
+      2. Escolha <strong>Adicionar à Tela de Início</strong>
+    `;
+    msg.style.position = 'fixed';
+    msg.style.bottom = '20px';
+    msg.style.left = '20px';
+    msg.style.right = '20px';
+    msg.style.padding = '15px';
+    msg.style.background = '#0d6efd';
+    msg.style.color = '#fff';
+    msg.style.textAlign = 'center';
+    msg.style.borderRadius = '10px';
+    msg.style.zIndex = '1000';
+    document.body.appendChild(msg);
+  }
+</script>
+
 </body>
 </html>
+
 
 
 
