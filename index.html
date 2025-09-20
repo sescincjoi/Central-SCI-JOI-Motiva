@@ -1012,27 +1012,12 @@ function mostrarNaoConforme(valor) {
 
     // cria container
     const box = document.createElement('div');
-    box.style.position = "fixed";
-    box.style.bottom = "20px";
-    box.style.right = "20px";
-    box.style.padding = "10px 20px";
-    box.style.background = "#0d6efd";
-    box.style.color = "#fff";
-    box.style.borderRadius = "10px";
-    box.style.zIndex = "1000";
-    box.style.display = "flex";
-    box.style.alignItems = "center";
-    box.style.gap = "10px";
+    box.className = 'instal-android';
 
     // botão instalar
     const btn = document.createElement('button');
+    btn.className = 'botao-instal';
     btn.textContent = "📲 Instalar App";
-    btn.style.background = "#fff";
-    btn.style.color = "#0d6efd";
-    btn.style.border = "none";
-    btn.style.padding = "6px 12px";
-    btn.style.borderRadius = "6px";
-    btn.style.cursor = "pointer";
 
     // botão fechar
     const closeBtn = document.createElement('span');
@@ -1072,7 +1057,7 @@ function mostrarNaoConforme(valor) {
     const msg = document.createElement('div');
     msg.className = 'msg-ios';
     msg.innerHTML = `
-      <div style="flex:1; text-align:left;">
+      <div style="flex:1;">
         📲 Para instalar este app:<br>
         1. Toque em <strong>Compartilhar</strong> (ícone ⬆️)<br>
         2. Escolha <strong>Adicionar à Tela de Início</strong>
@@ -1082,7 +1067,6 @@ function mostrarNaoConforme(valor) {
     const closeBtn = document.createElement('span');
     closeBtn.textContent = "✖";
     closeBtn.style.cursor = "pointer";
-    closeBtn.style.marginLeft = "10px";
     closeBtn.style.fontWeight = "bold";
 
     msg.appendChild(closeBtn);
@@ -1099,7 +1083,7 @@ function mostrarNaoConforme(valor) {
       top: 45%;
       left: 10%;
       right: 10%;
-      padding: 4% 2%;
+      padding: 5% 2%;
       background: rgb(255 255 255 / 95%);
       box-shadow: 0 1em 1.4em -1em rgb(255 255 255 / 50%);
       color: rgb(44 44 44);
@@ -1108,10 +1092,55 @@ function mostrarNaoConforme(valor) {
       border-radius: 0.7em;
       z-index: 1000;
     }
+    .msg-ios div {
+      text-align: center;
+    }
+    .msg-ios span {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 1em;
+      margin: 0;
+      padding: 2% 4%;
+    }
+    .instal-android {
+      position: fixed;
+      top: 45%;
+      left: 20%;
+      right: 20%;
+      padding: 10px 20px;
+      background: rgb(73 73 73);
+      color: rgb(255, 255, 255);
+      border-radius: 1.2em;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      box-shadow: inset 0 40px 20px -15px rgb(255 255 255 / 28%);
+      gap: 10px;
+    }
+    .botao-instal {
+      background: rgb(255, 255, 255);
+      color: rgb(102 102 102);
+      border: none;
+      padding: 2% 7%;
+      border-radius: 0.4em;
+      cursor: pointer;
+      font-size: 3.5em;
+    }
+    .instal-android span {
+      position: absolute;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 3em;
+      padding: 2% 5%;
+      right: 0;
+    }
+    
   </style>
 
 </body>
 </html>
+
 
 
 
