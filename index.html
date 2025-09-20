@@ -15,10 +15,11 @@
       --vh: 100%;
     }
     :root {
-      --cor-primaria: #1e90ff;
-      --cor-secundaria: #ff6347;
-      --cor-fundo: #f4f4f4;
-      --cor-texto: #333;
+      --cor-primaria: rgb(44 44 44);
+      --cor-secundaria: rgb(231 231 231);
+      --cor-fundoclaro: rgb(240 240 240);
+      --cor-textoclaro: #eaeaea;
+      --cor-textoescuro: rgb(44 44 44);
     }
     .tema-escuro {
       --cor-primaria: #00ced1;
@@ -29,37 +30,29 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: url(https://images.pexels.com/photos/5965211/pexels-photo-5965211.jpeg?_gl=1*an5dct*_ga*MTAyODczODAzNC4xNzU1MTE4Mzc1*_ga_8JE65Q40S6*czE3NTc3OTI4MzIkbzckZzEkdDE3NTc3OTMwMDIkajYwJGwwJGgw);
-      background-size: cover;
-      background-position: center;
       width: 100vw;
       height: calc(var(--vh, 1vh) * 100);
+      overflow: hidden;
     }
     .corpo-container {
       width: 100%;
       height: 100%;
       padding: 0;
-      background: rgb(0 0 0 / 85%);
+      background: var(--cor-fundoclaro);
       border-radius: 0;
-      box-shadow: inset 0 0px 10em rgba(0 0 0 / 80%);
       overflow: hidden;
       margin-bottom: -1vh;
     }
     h1 {
-      position: fixed;
-      left: 0;
-      top: 0;
       width: 100%;
       display: flex;
       font-size: 2.7em;
-      color: #fff;
-      background: rgb(0 0 0 / 90%);
+      color: #eaeaea;
+      background: var(--cor-primaria);
       margin: 0;
       height: 4.5em;
       align-items: center;
       justify-content: space-evenly;
-      box-shadow: 0 10px 40px -8px rgb(255 255 255 / 15%);
-      z-index: 999;
       border-radius: 0 0 0.3em 0.3em;
     }
     img.logoSCI {
@@ -71,71 +64,67 @@
     }
     .usuario {
       display: flex;
-      margin-top: calc(var(--vh, 1vh) * 11);
       margin-bottom: 0;
       width: 91%;
       height: 3.2em;
-      color: #fff;
+      color: var(--cor-textoescuro);
       font-size: 2.5em;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      padding-top: 0.3em;
       padding-left: 9%;
-      background: rgb(0 0 0 / 75%);
+      background: var(--cor-secundaria);
       white-space: nowrap;
     }
     #nomeUsuario {
       font-size: 1em;
       padding: 0.2em 1em;
-      background: rgb(255 255 255 / 10%);
-      border: 1px solid rgb(255 255 255 / 12%);
+      background: rgb(255 255 255);
+      border: 1px solid var(--cor-secundaria);
       border-radius: 0.2em;
       margin-left: 4%;
       margin-right: 9%;
       width: -webkit-fill-available;
-      color: #fff;
+      color: var(--cor-textoescuro);
     }
     .edificacoes {
       display: flex;
       width: 91%;
       height: 3.2em;
       margin: 0;
-      color: #fff;
+      color: var(--cor-textoescuro);
       font-size: 2.5em;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
       padding-left: 9%;
-      background: rgb(0 0 0 / 75%);
+      background: var(--cor-secundaria);
       white-space: nowrap;
       border-top: 1px solid rgb(255 255 255 / 20%);
     }
     select#edificacao {
       font-size: 1em;
       padding: 0.2em 1em;
-      background: rgb(255 255 255 / 10%);
-      border: 1px solid rgb(255 255 255 / 12%);
+      background: #fff;
+      border: 1px solid var(--cor-secundaria);
       border-radius: 0.2em;
       margin-left: 4%;
       margin-right: 9%;
       width: -webkit-fill-available;
-      color: #ffffff8f;
+      color: var(--cor-primaria);
       font-weight: 500;
     }
     #descricao-edificacao {
       display: flex;
-      width: 100%;
-      min-height: 2.2em;
-      padding-bottom: 0.4em;
       height: fit-content;
+      line-height: 3em;
       margin: 0;
-      color: #ffffff9e;
+      color: var(--cor-textoescuro);
       font-size: 2em;
       font-weight: 100;
       flex-direction: row;
       justify-content: center;
-      background: rgb(0 0 0 / 75%);
+      background: var(--cor-secundaria);
       border-top: 1px solid rgb(255 255 255 / 10%);
       align-items: center;
       box-shadow: 0 10px 40px -8px rgb(255 255 255 / 15%);
@@ -1140,6 +1129,7 @@ function mostrarNaoConforme(valor) {
 
 </body>
 </html>
+
 
 
 
