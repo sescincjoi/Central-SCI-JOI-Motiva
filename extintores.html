@@ -349,14 +349,32 @@
       border: 2px solid #00000014;
       color: rgb(0 0 0 / 90%);
     }
-    button#reset {
+    .botoes-rodape {
+      display: flex;
       position: fixed;
-      width: 100%;
-      height: 10%;
-      left: 0%;
-      bottom: 0%;
-      font-size: 2.6em;
+      bottom: 0dvh;
+      width: 100vw;
+      height: 13%;
+      flex-direction: column;
+      align-items: center;
+    }
+    .botoes-rodape a {
+      display: flex;
+      font-size: 3em;
+      width: 100vw;
+      height: 35%;
+      background: var(--cor-textoescuro);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
       border-radius: 0.3em 0.3em 0 0;
+      text-decoration: none;
+    }
+    button#reset {
+      width: 100%;
+      height: 65%;
+      font-size: 2.6em;
+      border-radius: 0;
       color: var(--cor-textoclaro);
       background: var(--cor-primaria);
       box-shadow: inset 0 3em 3em -3em #000;
@@ -595,7 +613,10 @@
   <div id="mensagem"></div>
 
   <br>
-  <button id="reset" onclick="resetarTodos()">🔄 Resetar TODOS os extintores</button>
+  <div class="botoes-rodape">
+    <a href="https://docs.google.com/spreadsheets/d/1RKNORO-bzM83ixu09xFVFboXLjwaOsCzWcZwKMLTTXM/edit?gid=1255221780#gid=1255221780">Acessar planilha ▶️</a>
+    <button id="reset" onclick="resetarTodos()">🔄 Resetar TODOS os extintores</button>
+  </div>
   <div id="confirmReset" style="display:none; margin-top:10px;">
     <p>Faça o Reset ao término de toda vistoria semanal ou para iniciar uma nova vistoria geral. Ele fará o reset de todos os status dos extintores inspecionados.</p>
     <span>Tem certeza que deseja resetar TODOS os extintores?</span>
