@@ -476,19 +476,37 @@
       white-space: nowrap;
       border-top: 1px solid rgb(255 255 255 / 20%);
     }
-    button#reset {
+   .botoes-rodape {
+      display: flex;
       position: fixed;
-      width: 100%;
-      height: calc(((2.4vw + 3vh) / 2) * 2.6);
-      left: 0%;
-      bottom: 0%;
-      font-size: calc(((2.4vw + 3vh) / 2) * 1);
+      bottom: 0dvh;
+      width: 100vw;
+      height: 12dvh;
+      flex-direction: column;
+      align-items: center;
+    }
+   .botoes-rodape a {
+      display: flex;
+      font-size: calc(((2.4vw + 3vh) / 2) * 0.6);
+      width: 100vw;
+      height: 50%;
+      background: var(--cor-textoescuro);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
       border-radius: 0.3em 0.3em 0 0;
-      color: var(--cor-textoclaro);
-      background: var(--cor-primaria);
-      box-shadow: inset 0 3em 3em -3em #000;
-      border: 1px solid rgb(255 255 255 / 20%);
-      filter: drop-shadow(2px 0px 2px black);
+      text-decoration: none;
+    }
+    button#reset {
+        position: relative;
+        width: 100%;
+        height: 50%;
+        font-size: calc(((2.4vw + 3vh) / 2) * 0.6);
+        color: var(--cor-textoclaro);
+        background: var(--cor-primaria);
+        box-shadow: inset 0 3em 3em -3em #000;
+        border: 1px solid rgb(255 255 255 / 20%);
+        filter: drop-shadow(2px 0px 2px black);
     }
     #descricao-edificacao {
       display: flex;
