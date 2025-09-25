@@ -1,7 +1,7 @@
 {
   "name": "Extintores SCI JOI",
   "short_name": "Extintores SCI/JOI",
-  "start_url": "extintores.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "rgb(40 40 40)",
   "theme_color": "#000000",
@@ -19,5 +19,6 @@
   ]
 
 }
+
 
 
