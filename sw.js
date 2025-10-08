@@ -1,15 +1,26 @@
-// sw.js
+const CACHE_NAME = 'app-cache-v1';
+const FILES_TO_CACHE = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/styles.css',
+  '/app.js'
+  // adicione outras páginas/recursos necessários
+];
+
 self.addEventListener('install', event => {
-  // força ativação imediata
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE))
+  );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
-  // assume controle das abas já abertas
   event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
-  // pode interceptar requisições (aqui só repassa)
-  event.respondWith(fetch(event.request).catch(() => new Response("Offline")));
+  event.respondWith(
+    caches.match(event.request).then(resp => resp || fetch(event.request))
+  );
 });
